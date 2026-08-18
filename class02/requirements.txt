@@ -1,0 +1,30 @@
+# KenLM Python bindings
+cython
+kenlm
+
+# Jupyter
+notebook
+jupyterlab
+
+# Análisis y visualización
+numpy
+pandas
+matplotlib
+seaborn
+
+# Machine Learning
+scikit-learn
+xgboost
+lightgbm
+
+# NLP
+nltk
+spacy
+gensim
+transformers
+sentencepiece
+
+# Otros útiles
+tqdm
+beautifulsoup4
+requests

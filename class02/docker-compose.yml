@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  ubuntu2204:
+    build: .
+    container_name: ubuntu2204
+    ports:
+      - "8888:8888"
+    volumes:
+    # adaptarlo a sus propios directorios
+      - /Users/emontoya/ubuntu/emontoya:/home/emontoya
+      - /Users/emontoya/ubuntu/workspace:/workspace
+    tty: true
+    stdin_open: true
