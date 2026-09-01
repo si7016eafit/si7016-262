@@ -1,0 +1,50 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+
+    gpus: all
+
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+      OLLAMA_MODELS: /root/.ollama/models
+
+    volumes:
+      - ./data/ollama:/root/.ollama
+
+    ports:
+      - "127.0.0.1:11434:11434"
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+      ENABLE_OLLAMA_API: "True"
+
+      ANONYMIZED_TELEMETRY: "False"
+      DO_NOT_TRACK: "True"
+      SCARF_NO_ANALYTICS: "True"
+
+    volumes:
+      - ./data/open-webui:/app/backend/data
+
+    ports:
+      - "127.0.0.1:3000:8080"
+
+    restart: unless-stopped
