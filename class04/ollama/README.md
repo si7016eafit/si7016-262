@@ -59,7 +59,7 @@ sudo usermod -a -G docker <username_gcp>
 
     cd si7016-262/class04/ollama
 
-    mkdir -p "$PWD/data"
+    mkdir -p "$HOME/si7016-262"
 
     sudo docker pull \
         quay.io/jupyter/tensorflow-notebook:x86_64-cuda-latest
@@ -68,7 +68,7 @@ sudo usermod -a -G docker <username_gcp>
     --gpus all \
     --shm-size=2g \
     -p 8888:8888 \
-    -v "$PWD/data:/home/jovyan/work" \
+    -v "$HOME/si7016-262:/home/jovyan/labs" \
     quay.io/jupyter/tensorflow-notebook:x86_64-cuda-latest
 
 ## IV. ejecutar ollama:
