@@ -1,0 +1,88 @@
+# docker-compose.yml — vLLM + Open WebUI sobre una VM g2-standard-4 (1x NVIDIA L4)
+#
+# Curso SI7016 (2026-2) — Clase 04, Lab B
+#
+# Uso: copiar esta carpeta (class04b-assets/) a la VM, crear un archivo .env
+# a partir de .env.example, y correr:
+#   docker compose up -d
+#
+# Open WebUI queda disponible en el puerto 3000 de la VM (interfaz tipo
+# ChatGPT). El puerto 8000 de vLLM NO se expone al host a propósito —
+# Open WebUI le habla directamente por la red interna de docker compose
+# (http://vllm:8000/v1). Si necesitas llamar a vLLM tú mismo desde afuera,
+# usa un túnel SSH (ver la sección 6 del notebook) en vez de abrir el puerto
+# 8000 al público.
+
+services:
+  vllm:
+    image: vllm/vllm-openai:latest
+    container_name: vllm
+    runtime: nvidia
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: ["gpu"]
+
+    ipc: host
+
+    volumes:
+      - ./hf_cache:/root/.cache/huggingface
+
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN:-}
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
+    command: >
+      --model ${MODEL_ID:-Qwen/Qwen2.5-7B-Instruct}
+      --max-model-len ${MAX_MODEL_LEN:-8192}
+      --gpu-memory-utilization ${GPU_MEMORY_UTILIZATION:-0.90}
+      --enable-auto-tool-choice
+      --tool-call-parser hermes
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f --connect-timeout 4 --max-time 9 http://127.0.0.1:8000/health || exit 1"
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 900s
+
+    restart: unless-stopped
+
+    # Solo si necesitas acceder desde fuera del docker-compose:
+    #
+    # ports:
+    #   - "8000:8000"
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+
+    depends_on:
+      vllm:
+        condition: service_healthy
+
+    ports:
+      - "3000:8080"
+
+    volumes:
+      - open-webui-data:/app/backend/data
+
+    environment:
+      - ENABLE_OPENAI_API=true
+      - OPENAI_API_BASE_URL=http://vllm:8000/v1
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-si7016-lab-local}
+      - WEBUI_AUTH=true
+
+    restart: unless-stopped
+
+
+volumes:
+  open-webui-data:
