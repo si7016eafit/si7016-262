@@ -1,7 +1,7 @@
 #
 # Universidad EAFIT
 # 2026-2
-# SI7016 - NLP - Lecture 05b - Chatbot RAG con Streamlit (actualizado 2026-2)
+# SI7016 - NLP - Lecture 05b - Chatbot RAG con Streamlit
 #
 import uuid
 
@@ -53,7 +53,7 @@ graph_builder.add_edge("retrieve_and_generate", END)
 chat_chain = graph_builder.compile(checkpointer=InMemorySaver())
 
 # Interfaz en Streamlit
-st.title("Chatbot RAG con LangGraph (2026)")
+st.title("Chatbot RAG con LangGraph")
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
