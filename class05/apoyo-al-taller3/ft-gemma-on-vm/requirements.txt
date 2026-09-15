@@ -1,0 +1,15 @@
+# Dependencias que faltan en quay.io/jupyter/tensorflow-notebook:x86_64-cuda-latest
+# (esa imagen trae TensorFlow+CUDA, pero no el stack de PyTorch/Hugging Face).
+#
+# Instalar dentro del contenedor (jovyan tiene permisos sobre /opt/conda,
+# no necesitas sudo):
+#   pip install -r requirements.txt
+
+torch
+transformers
+peft
+trl
+bitsandbytes
+accelerate
+datasets
+huggingface_hub
