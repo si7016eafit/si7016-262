@@ -1,0 +1,52 @@
+# docker-compose.yml — equivalente a los comandos:
+#
+#   sudo docker pull quay.io/jupyter/tensorflow-notebook:x86_64-cuda-latest
+#   sudo docker run --rm -it \
+#     --gpus all \
+#     --shm-size=2g \
+#     -p 8888:8888 \
+#     -v "$HOME/si7016-262:/home/jovyan/labs" \
+#     quay.io/jupyter/tensorflow-notebook:x86_64-cuda-latest
+#
+# Uso (desde si7016-262/class04/ollama/, después de `mkdir -p "$HOME/si7016-262"`):
+#   docker compose up
+#   docker compose down          # equivalente a que el contenedor se autodestruya (--rm) al salir
+#
+# La URL con el token de acceso a Jupyter aparece en los logs de:
+#   docker compose logs -f notebook
+
+services:
+  notebook:
+    image: quay.io/jupyter/tensorflow-notebook:x86_64-cuda-latest
+    container_name: si7016-tensorflow-notebook-gpu
+
+    # Equivalente a --gpus all
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: ["gpu"]
+
+    # Equivalente a --shm-size=2g
+    shm_size: "2g"
+
+    # Equivalente a -p 8888:8888
+    ports:
+      - "8888:8888"
+
+    # Equivalente a -v "$HOME/si7016-262:/home/jovyan/labs"
+    # ${HOME} lo toma docker compose del entorno de quien corre el comando.
+    volumes:
+      - ${HOME}/si7016-262:/home/jovyan/labs
+
+    # Equivalente a -it (mantiene la sesión interactiva/tty asignada).
+    # No es estrictamente necesario para usar Jupyter desde el navegador,
+    # pero se deja para reproducir el comportamiento exacto del `docker run` original.
+    stdin_open: true
+    tty: true
+
+    # Nota: -rm (autodestruir el contenedor al salir) no tiene equivalente
+    # directo en compose; `docker compose down` logra el mismo resultado.
