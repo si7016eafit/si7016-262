@@ -6,6 +6,20 @@
 
     Máquina Virtual en GCP, g2-standard-4 (4 vCPUs, 16 GB Memory), con Sistema Operativo Deep Learning Linux + GPU Nvidia L4
 
+ESTA MÁQUINA REQUIERE AL MENOS 150 GB DE TAMAÑO EN EL DISCO DURO, SE RECOMIENDA 200 GB. SI ES LA PRIMERA VEZ QUE CREA LA VM REQUIERA DE UNA VEZ LOS 200 GB.
+
+SI YA ESTÁ CREADA LA VM, PUEDE AGRANDAR EL DISCO DURO ASÍ:
+
+    1. entre por la consola de gcp, a la Máquina Virtual, Ir a Storage y editar la configuración y darle EDIT en los 3 puntos (en la parte superior - derecha). Cambie a 200 GB.
+
+    2. Entre a la máquina virtual por SSH y dele los siguientes comandos:
+
+    df -h /
+    sudo lsblk
+    sudo growpart /dev/nvme0n1 1
+    sudo resize2fs /dev/nvme0n1p1
+    df -h /
+
 Para crear esta VM debe solicitar incremento de quota, le llegará un email, conteste diciendo que esta VM será utilizada como parte del desarrollo de un curso de applied NLP en el marco de la MCDA, y que requiere realizar actividades de Ejecución de modelos abiertos LLM y fine-tuning, solo para fines académicos.
 
 ### acceso remoto y tunnel
