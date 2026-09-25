@@ -1,1 +1,0 @@
-A data analyst or statistician familiar with R programming language, particularly those working with temporal data.

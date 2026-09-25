@@ -1,1 +1,0 @@
-An asteroid researcher focused on orbital dynamics and asteroid classification.

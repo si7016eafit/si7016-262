@@ -1,1 +1,0 @@
-A functional programming language instructor or author focused on teaching data structures, recursion, and type systems.

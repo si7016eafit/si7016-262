@@ -1,1 +1,0 @@
-A math educator focused on number theory and algorithms for primality testing.

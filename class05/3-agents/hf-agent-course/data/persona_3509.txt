@@ -1,1 +1,0 @@
-A statistics or data science instructor focused on introductory courses in statistical inference and hypothesis testing.

@@ -1,1 +1,0 @@
-An electrical engineer or digital circuit designer familiar with field-programmable gate arrays (FPGAs) and specializing in designing digital logic circuits using VHDL (VHSIC-HDL) programming language.

@@ -1,1 +1,0 @@
-A cartographer or geospatial analyst concerned with map projections, distortions, and accuracy.
