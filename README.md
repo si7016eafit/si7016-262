@@ -26,3 +26,15 @@ Course Repository SI7016 Applied Natural Language Processing at Universidad EAFI
 * Computational resources: I strongly recommend creating (free) accounts on the following platforms:
  
 * github
+
+* python venv
+
+python3 -m venv si7016
+source si7016/bin/activate
+
+... working on this...
+... ending:
+
+deactivate
+
+
